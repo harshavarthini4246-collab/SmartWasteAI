@@ -1,0 +1,27 @@
+{
+  "dataset_name": "Restaurant Food Wastage Data",
+  "dataset_source": "https://github.com/Ashutosh-dutta07/Smart-Food-Waste-Intelligence",
+  "dataset_rows_raw": 1782,
+  "dataset_rows_clean": 1618,
+  "train_rows": 1294,
+  "test_rows": 324,
+  "features": [
+    "Number of Guests",
+    "Quantity of Food",
+    "Type of Food",
+    "Event Type",
+    "Storage Conditions",
+    "Purchase History",
+    "Seasonality",
+    "Preparation Method",
+    "Geographical Location",
+    "Pricing"
+  ],
+  "target": "Wastage Food Amount",
+  "model": "RandomForestRegressor",
+  "test_mae": 1.858,
+  "test_rmse": 2.938,
+  "test_r2": 0.9199,
+  "test_median_absolute_error": 0.938,
+  "note": "Metrics describe this public dataset's held-out test split only. They do not guarantee accuracy on a particular local restaurant or donation operation."
+}

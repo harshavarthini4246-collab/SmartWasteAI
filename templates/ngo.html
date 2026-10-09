@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+ <div class="d-flex justify-content-between mb-4">
+  <div><h2>NGO Dashboard</h2><p class="text-muted">{{ my_ngo.name }} • {{ my_ngo.location }}</p></div>
+ </div>
+
+ <div class="alert alert-success">
+  <b>🤖 AI Recommendation:</b> Donations are ranked using distance, expiry urgency, food requirement and NGO capacity.
+ </div>
+
+ <h4 class="mb-3">Available Donations</h4>
+ {% if scored %}
+ <div class="row g-3">
+ {% for item in scored %}
+  <div class="col-lg-6">
+   <div class="card shadow-sm border-0 h-100">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+       <h5>{{ item.donation.food_name }}</h5>
+       <span class="badge bg-success">{{ item.score }} score</span>
+      </div>
+      <p class="mb-1"><b>{{ item.donation.quantity }} kg</b> • {{ item.donation.food_type }}</p>
+      <p class="text-muted mb-1">📍 {{ item.donation.location }} • {{ item.distance }} km</p>
+      <p class="text-muted">⏳ {{ item.hours }} hours estimated until expiry</p>
+      <div class="small bg-light p-2 rounded mb-3">Why recommended: {{ item.reason }}</div>
+      <form method="POST" action="{{ url_for('accept_donation', donation_id=item.donation.id) }}">
+       <button class="btn btn-success w-100">Accept Donation</button>
+      </form>
+    </div>
+   </div>
+  </div>
+ {% endfor %}
+ </div>
+ {% else %}
+ <div class="empty-box">No available donations right now.</div>
+ {% endif %}
+
+ <h4 class="mt-5 mb-3">Accepted / Delivered</h4>
+ <div class="table-responsive">
+ <table class="table">
+  <thead><tr><th>Food</th><th>Quantity</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody>
+  {% for d in history %}
+   <tr>
+    <td>{{ d.food_name }}</td><td>{{ d.quantity }} kg</td><td>{{ d.status }}</td>
+    <td>
+      {% if d.status == 'Accepted' %}
+      <form method="POST" action="{{ url_for('deliver_donation', donation_id=d.id) }}">
+       <button class="btn btn-sm btn-primary">Mark Delivered</button>
+      </form>
+      {% else %}—{% endif %}
+    </td>
+   </tr>
+  {% else %}
+   <tr><td colspan="4">No history yet.</td></tr>
+  {% endfor %}
+  </tbody>
+ </table>
+ </div>
+</div>
+{% endblock %}

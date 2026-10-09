@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+<div class="container py-5">
+  <div class="row align-items-center">
+    <div class="col-lg-7">
+      <span class="badge bg-success mb-3">SDG 2 • 11 • 12 • 13</span>
+      <h1 class="display-4 fw-bold">Reduce Food Waste.<br>Feed Communities.</h1>
+      <p class="lead">SmartWaste AI connects surplus-food donors with nearby organizations using explainable AI-based matching.</p>
+      <a href="{{ url_for('login') }}" class="btn btn-success btn-lg me-2">Start Demo</a>
+      <a href="{{ url_for('impact') }}" class="btn btn-outline-dark btn-lg">View Impact</a>
+    </div>
+    <div class="col-lg-5">
+      <div class="glass-card">
+        <h4>🤖 AI Matching Engine</h4>
+        <p>Ranks recipients using distance, expiry urgency, food requirement and capacity.</p>
+        <div class="mini-flow">Donor → AI → NGO → Pickup → Beneficiary</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="container py-5">
+  <h2 class="text-center mb-4">Live Impact Dashboard</h2>
+  <div class="row g-3">
+    <div class="col-md-3"><div class="stat-card"><h2>{{ stats.food|round(1) }} kg</h2><p>Food Saved</p></div></div>
+    <div class="col-md-3"><div class="stat-card"><h2>{{ stats.people|int }}</h2><p>People Served*</p></div></div>
+    <div class="col-md-3"><div class="stat-card"><h2>{{ stats.donations }}</h2><p>Donations</p></div></div>
+    <div class="col-md-3"><div class="stat-card"><h2>{{ stats.co2 }} t</h2><p>Estimated CO₂ Impact</p></div></div>
+  </div>
+  <p class="text-muted mt-2">*Demo estimate: 1 kg redistributed food ≈ 4 servings. CO₂ figure is an illustrative prototype estimate.</p>
+
+  <div class="row mt-5 g-4">
+    <div class="col-md-3"><div class="sdg-box"><b>SDG 2</b><br>Zero Hunger</div></div>
+    <div class="col-md-3"><div class="sdg-box"><b>SDG 11</b><br>Sustainable Communities</div></div>
+    <div class="col-md-3"><div class="sdg-box"><b>SDG 12</b><br>Responsible Consumption</div></div>
+    <div class="col-md-3"><div class="sdg-box"><b>SDG 13</b><br>Climate Action</div></div>
+  </div>
+</div>
+{% endblock %}

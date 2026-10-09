@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+ <div class="row justify-content-center">
+  <div class="col-md-5">
+   <div class="card shadow border-0 p-4">
+    <h2 class="fw-bold">Login</h2>
+    <p class="text-muted">Use one of the demo accounts below.</p>
+    <form method="POST">
+      <label>Email</label>
+      <input class="form-control mb-3" type="email" name="email" required>
+      <label>Password</label>
+      <input class="form-control mb-3" type="password" name="password" required>
+      <button class="btn btn-success w-100">Login</button>
+    </form>
+    <hr>
+    <small>
+      Donor: donor@demo.com / 1234<br>
+      NGO: ngo@demo.com / 1234<br>
+      Admin: admin@demo.com / admin
+    </small>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %}

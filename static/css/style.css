@@ -1,0 +1,13 @@
+body { background:#f7faf8; }
+.hero { background:linear-gradient(135deg,#e8f8ee,#ffffff); min-height:500px; display:flex; align-items:center; }
+.glass-card { background:rgba(255,255,255,.82); border-radius:22px; padding:32px; box-shadow:0 20px 60px rgba(0,0,0,.10); }
+.mini-flow { background:#ecfdf3; padding:15px; border-radius:12px; font-weight:600; color:#198754; }
+.stat-card { background:#fff; padding:25px; border-radius:18px; text-align:center; box-shadow:0 6px 25px rgba(0,0,0,.07); height:100%; }
+.stat-card h2 { color:#198754; font-weight:800; }
+.sdg-box { padding:25px; border-radius:16px; background:#fff; box-shadow:0 5px 20px rgba(0,0,0,.06); text-align:center; min-height:100px; }
+.sdg-large { background:#fff; padding:30px; border-radius:18px; box-shadow:0 5px 25px rgba(0,0,0,.07); height:100%; }
+.empty-box { padding:50px; text-align:center; background:#fff; border-radius:18px; color:#777; }
+.status-available { background:#198754; color:#fff; }
+.status-accepted { background:#0d6efd; color:#fff; }
+.status-delivered { background:#6f42c1; color:#fff; }
+label { font-weight:600; margin-bottom:6px; }

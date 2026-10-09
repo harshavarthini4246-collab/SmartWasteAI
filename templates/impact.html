@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+ <div class="text-center mb-5">
+  <span class="badge bg-success">SUSTAINABLE DEVELOPMENT GOALS</span>
+  <h1 class="mt-3">Our Impact</h1>
+  <p class="lead">Turning surplus food into community impact.</p>
+ </div>
+ <div class="row g-4">
+  <div class="col-md-3"><div class="stat-card"><h2>{{ food }} kg</h2><p>Food Delivered</p></div></div>
+  <div class="col-md-3"><div class="stat-card"><h2>{{ people }}</h2><p>Estimated Servings</p></div></div>
+  <div class="col-md-3"><div class="stat-card"><h2>{{ donations }}</h2><p>Successful Donations</p></div></div>
+  <div class="col-md-3"><div class="stat-card"><h2>{{ co2 }} t</h2><p>Illustrative CO₂ Impact</p></div></div>
+ </div>
+
+ <div class="row g-4 mt-4">
+  <div class="col-md-6"><div class="sdg-large"><h3>🎯 SDG 2 — Zero Hunger</h3><p>Redirect surplus food to organizations serving communities.</p></div></div>
+  <div class="col-md-6"><div class="sdg-large"><h3>🏙️ SDG 11 — Sustainable Communities</h3><p>Coordinate local donors, NGOs and collection workflows.</p></div></div>
+  <div class="col-md-6"><div class="sdg-large"><h3>♻️ SDG 12 — Responsible Consumption</h3><p>Reduce avoidable food waste through redistribution.</p></div></div>
+  <div class="col-md-6"><div class="sdg-large"><h3>🌍 SDG 13 — Climate Action</h3><p>Track an illustrative environmental impact metric from rescued food.</p></div></div>
+ </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div><p class="text-success fw-semibold mb-1">MACHINE LEARNING LAB</p><h1 class="h2 fw-bold mb-2">Food Waste Prediction</h1><p class="text-secondary mb-0">A trained Random Forest model estimates expected food wastage from event and food-service details.</p></div>
+    <span class="badge text-bg-success p-2">{% if ready %}Model trained{% else %}Training required{% endif %}</span>
+  </div>
+  {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+  {% if not ready %}
+  <div class="alert alert-warning"><strong>Model files not found.</strong> In the VS Code terminal, run <code>python download_dataset.py</code> and then <code>python train_model.py</code>. Refresh this page after training.</div>
+  {% endif %}
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card shadow-sm border-0"><div class="card-body p-4">
+        <h2 class="h5 fw-bold mb-1">Run a prediction</h2><p class="small text-secondary mb-4">Enter a scenario similar to the training dataset.</p>
+        <form method="post" action="{{ url_for('ml_dashboard') }}" class="row g-3">
+          <div class="col-md-6"><label class="form-label">Food type</label><select class="form-select" name="food_type" required>{% for v in ['Meat','Vegetables','Fruits','Baked Goods','Dairy Products'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Event type</label><select class="form-select" name="event_type">{% for v in ['Corporate','Birthday','Wedding','Social Gathering'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Number of guests</label><input class="form-control" type="number" min="1" max="100000" name="guests" value="300" required></div>
+          <div class="col-md-6"><label class="form-label">Food prepared (dataset units)</label><input class="form-control" type="number" min="1" max="100000" name="quantity" value="400" required></div>
+          <div class="col-md-6"><label class="form-label">Storage conditions</label><select class="form-select" name="storage">{% for v in ['Refrigerated','Room Temperature'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Purchase history</label><select class="form-select" name="purchase">{% for v in ['Regular','Occasional'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Seasonality</label><select class="form-select" name="season">{% for v in ['All Seasons','Summer','Winter'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Preparation method</label><select class="form-select" name="method">{% for v in ['Buffet','Finger Food','Sit-down Dinner'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Geographical setting</label><select class="form-select" name="location">{% for v in ['Urban','Suburban','Rural'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label">Pricing</label><select class="form-select" name="pricing">{% for v in ['Low','Moderate','High'] %}<option>{{v}}</option>{% endfor %}</select></div>
+          <div class="col-12"><button class="btn btn-success px-4" type="submit" {% if not ready %}disabled{% endif %}>Predict expected waste</button></div>
+        </form>
+      </div></div>
+      {% if prediction %}
+      <div class="card shadow-sm border-0 mt-4"><div class="card-body p-4">
+        <p class="text-success fw-semibold mb-1">PREDICTION RESULT</p><div class="row g-3">
+          <div class="col-sm-4"><div class="stat-card"><div class="small text-secondary">Expected waste</div><h2 class="h3">{{ prediction.predicted_waste }}</h2><small>dataset units</small></div></div>
+          <div class="col-sm-4"><div class="stat-card"><div class="small text-secondary">Waste rate</div><h2 class="h3">{{ prediction.waste_rate }}%</h2></div></div>
+          <div class="col-sm-4"><div class="stat-card"><div class="small text-secondary">Estimated risk</div><h2 class="h3">{{ prediction.risk }}</h2></div></div>
+        </div><p class="mt-3 mb-0">{{ prediction.advice }}</p>
+      </div></div>
+      {% endif %}
+    </div>
+    <div class="col-lg-5">
+      <div class="card shadow-sm border-0 mb-4"><div class="card-body p-4"><h2 class="h5 fw-bold">Model evaluation</h2>
+      {% if metrics %}<div class="row g-3 mt-1">
+        <div class="col-6"><div class="border rounded p-3"><div class="small text-secondary">Test MAE</div><div class="h4 mb-0">{{ metrics.test_mae }}</div></div></div>
+        <div class="col-6"><div class="border rounded p-3"><div class="small text-secondary">Test RMSE</div><div class="h4 mb-0">{{ metrics.test_rmse }}</div></div></div>
+        <div class="col-6"><div class="border rounded p-3"><div class="small text-secondary">Test R²</div><div class="h4 mb-0">{{ metrics.test_r2 }}</div></div></div>
+        <div class="col-6"><div class="border rounded p-3"><div class="small text-secondary">Clean records</div><div class="h4 mb-0">{{ metrics.dataset_rows_clean }}</div></div></div>
+      </div><p class="small text-secondary mt-3 mb-0">Hold-out test split: {{ metrics.test_rows }} records. Metrics describe this dataset only.</p>{% else %}<p class="text-secondary mb-0">Evaluation metrics will appear after training.</p>{% endif %}
+      </div></div>
+      <div class="card shadow-sm border-0"><div class="card-body p-4"><h2 class="h5 fw-bold">Top model features</h2>
+      {% if importance %}{% for item in importance %}<div class="mb-3"><div class="d-flex justify-content-between small mb-1"><span>{{ item.feature }}</span><span>{{ (item.importance * 100)|round(1) }}%</span></div><div class="progress" role="progressbar" aria-valuenow="{{ item.importance * 100 }}" aria-valuemin="0" aria-valuemax="100" style="height:8px"><div class="progress-bar bg-success" style="width:{{ item.importance * 100 }}%"></div></div></div>{% endfor %}{% else %}<p class="text-secondary mb-0">Feature importance will appear after training.</p>{% endif %}
+      </div></div>
+    </div>
+  </div>
+  <div class="alert alert-light border mt-4 small mb-0"><strong>Responsible use:</strong> The selected public dataset describes restaurant/event food wastage. The model output is an educational estimate, not a food-safety decision or a validated forecast for a specific local donor. Confirm actual leftovers and safe handling conditions before redistribution. Dataset source: <a href="https://github.com/Ashutosh-dutta07/Smart-Food-Waste-Intelligence" target="_blank" rel="noopener">public dataset repository</a>.</div>
+</section>
+{% endblock %}
