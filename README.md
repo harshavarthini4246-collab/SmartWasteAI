@@ -1,49 +1,69 @@
-# SmartWaste AI — Python + Machine Learning Upgrade
+# SmartWaste AI
 
-A Flask + SQLite food donation platform upgraded with a trained Scikit-learn model, prediction page, model evaluation metrics and feature-importance view. Existing donor/NGO/admin workflows remain in place.
+An AI-powered food waste prediction and donation management system built with Python, Flask, and Machine Learning.
 
-## Machine learning workflow
+## Features
 
-1. Download the public restaurant food-wastage dataset.
-2. Clean numeric values, remove duplicates and impossible target rows.
-3. Split into train/test sets (80/20, random seed 42).
-4. Impute missing values and one-hot encode categorical columns inside a Scikit-learn pipeline.
-5. Train a Random Forest Regressor to predict `Wastage Food Amount`.
-6. Evaluate the held-out test split with MAE, RMSE and R².
-7. Save the pipeline, metrics and feature importances under `models/`.
-8. Use the trained pipeline on the `/ml-lab` dashboard.
+* Food waste prediction using Random Forest Regression
+* Public restaurant food-wastage dataset
+* Model evaluation using MAE, RMSE, and R²
+* ML metrics and feature-importance outputs
+* Food donation management interface
+* NGO and donor workflows
 
-## Run in VS Code (Windows)
+## Machine Learning
 
-Open this `SmartWasteAI` folder in VS Code. Since your computer has Python 3.10 installed at a full path and the `py` launcher may not work, use the Python executable selected in VS Code or this command if needed:
+The model is trained using a public dataset and evaluated on a held-out test set.
 
-```cmd
-"C:\Users\hp\AppData\Local\Programs\Python\Python310\python.exe" -m venv venv
-venv\Scripts\activate
-python -m pip install --default-timeout=300 -r requirements.txt
-python download_dataset.py
-python train_model.py
-python app.py
-```
+* Algorithm: RandomForestRegressor
+* Clean dataset rows: 1,618
+* Training rows: 1,294
+* Test rows: 324
+* MAE: 1.858 dataset units
+* RMSE: 2.938 dataset units
+* R²: 0.9199
 
-If you already have a working `venv` outside this folder, activate that environment instead of creating a second one. From the original layout in the earlier setup, if the venv is in the parent folder, activate it with `..\venv\Scripts\activate`.
+These metrics reflect evaluation on the public dataset and are not a real-world validation study.
 
-Open `http://127.0.0.1:5000` and select **ML Prediction** in the navigation.
+## Setup
 
-## Demo accounts
+1. Install Python 3.10.
 
-- Donor: `donor@demo.com` / `1234`
-- NGO: `ngo@demo.com` / `1234`
-- Admin: `admin@demo.com` / `admin`
+2. Create and activate a virtual environment.
 
-## What is real ML here?
+3. Install dependencies:
 
-The food-waste estimate is produced by a fitted `RandomForestRegressor`, trained from a public CSV and evaluated on a held-out test split. The NGO matching score in the donation workflow is a separate explainable rules-based ranking using distance, expiry urgency, food requirement and capacity; it is **not** an ML classifier.
+   `pip install -r requirements.txt`
 
-## Important dataset caveat
+4. Download the dataset:
 
-The upstream dataset does not clearly document the physical units for the quantity and waste fields. The ML page therefore displays *dataset units*, not kilograms. Metrics are only evidence of performance on this dataset's test split and should not be presented as validated real-world accuracy. Do not use the model to make food-safety decisions. Dataset details: [DATASET_SOURCE.md](DATASET_SOURCE.md).
+   `python download_dataset.py`
 
-## GitHub safety
+5. Train the model:
 
-Do not upload your `venv/`, local database, passwords, or secrets. The `.gitignore` file excludes these. The demo login accounts and hard-coded Flask secret are for local demonstration only; replace them and implement password hashing/CSRF protection before public deployment.
+   `python train_model.py`
+
+6. Run the application:
+
+   `python app.py`
+
+7. Open `http://127.0.0.1:5000` in your browser.
+
+## Project Structure
+
+* `app.py` — Flask application
+* `ml_engine.py` — Machine learning integration
+* `train_model.py` — Model training and evaluation
+* `download_dataset.py` — Dataset downloader
+* `data/` — Dataset files
+* `models/` — Saved model metrics and artifacts
+* `templates/` — HTML templates
+* `static/` — CSS and JavaScript
+
+## Dataset
+
+Refer to `DATASET_SOURCE.md` for the dataset source and related details.
+
+## Disclaimer
+
+Predictions are estimates based on the training dataset. Verify predictions against real-world data before operational use.
